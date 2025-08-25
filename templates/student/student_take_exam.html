@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ exam.title }}</h2>
+<p>{{ exam.prompt }}</p>
+<form method="post">
+  <textarea name="essay" rows="15" placeholder="Write your essay here..."></textarea><br>
+  <button type="submit">Submit</button>
+</form>
+{% endblock %}
+

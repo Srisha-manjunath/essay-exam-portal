@@ -1,0 +1,552 @@
+import React, { useState } from 'react';
+import { 
+  BookOpen, 
+  Calendar, 
+  Trophy, 
+  Clock, 
+  CheckCircle, 
+  AlertCircle, 
+  Star,
+  TrendingUp,
+  FileText,
+  Video,
+  Users,
+  MessageCircle,
+  Bell,
+  Search,
+  Filter,
+  Download,
+  Play
+} from 'lucide-react';
+
+const StudentDashboard = () => {
+  const [activeTab, setActiveTab] = useState('overview');
+  const [notifications, setNotifications] = useState([
+    { id: 1, type: 'assignment', message: 'Physics Assignment due tomorrow', time: '2 hours ago', read: false },
+    { id: 2, type: 'grade', message: 'Math Quiz graded - 95%', time: '5 hours ago', read: false },
+    { id: 3, type: 'announcement', message: 'New study materials uploaded', time: '1 day ago', read: true }
+  ]);
+
+  const courses = [
+    {
+      id: 1,
+      name: 'Advanced Physics',
+      code: 'PHY301',
+      instructor: 'Dr. Sarah Johnson',
+      progress: 75,
+      grade: 'A-',
+      nextClass: 'Today 2:00 PM',
+      assignments: 3,
+      color: 'bg-blue-500'
+    },
+    {
+      id: 2,
+      name: 'Calculus III',
+      code: 'MATH301',
+      instructor: 'Prof. Michael Chen',
+      progress: 60,
+      grade: 'B+',
+      nextClass: 'Tomorrow 10:00 AM',
+      assignments: 2,
+      color: 'bg-green-500'
+    },
+    {
+      id: 3,
+      name: 'Computer Science',
+      code: 'CS201',
+      instructor: 'Dr. Emily Rodriguez',
+      progress: 90,
+      grade: 'A',
+      nextClass: 'Wed 1:00 PM',
+      assignments: 1,
+      color: 'bg-purple-500'
+    }
+  ];
+
+  const assignments = [
+    {
+      id: 1,
+      title: 'Quantum Mechanics Problem Set',
+      course: 'Advanced Physics',
+      dueDate: '2025-08-26',
+      status: 'pending',
+      priority: 'high',
+      progress: 60
+    },
+    {
+      id: 2,
+      title: 'Integration Techniques',
+      course: 'Calculus III',
+      dueDate: '2025-08-28',
+      status: 'pending',
+      priority: 'medium',
+      progress: 30
+    },
+    {
+      id: 3,
+      title: 'Algorithm Analysis Report',
+      course: 'Computer Science',
+      dueDate: '2025-08-30',
+      status: 'completed',
+      priority: 'low',
+      progress: 100
+    }
+  ];
+
+  const recentGrades = [
+    { course: 'Advanced Physics', assignment: 'Midterm Exam', grade: 'A-', points: '87/100', date: '2025-08-20' },
+    { course: 'Calculus III', assignment: 'Quiz 4', grade: 'B+', points: '88/100', date: '2025-08-18' },
+    { course: 'Computer Science', assignment: 'Project 2', grade: 'A', points: '95/100', date: '2025-08-15' }
+  ];
+
+  const studyResources = [
+    { id: 1, title: 'Physics Lecture Notes - Week 6', type: 'pdf', course: 'Advanced Physics', downloaded: false },
+    { id: 2, title: 'Calculus Practice Problems', type: 'worksheet', course: 'Calculus III', downloaded: true },
+    { id: 3, title: 'Programming Tutorial Video', type: 'video', course: 'Computer Science', downloaded: false }
+  ];
+
+  const markNotificationRead = (id) => {
+    setNotifications(notifications.map(notif => 
+      notif.id === id ? { ...notif, read: true } : notif
+    ));
+  };
+
+  const getProgressColor = (progress) => {
+    if (progress >= 80) return 'bg-green-500';
+    if (progress >= 60) return 'bg-yellow-500';
+    return 'bg-red-500';
+  };
+
+  const getPriorityColor = (priority) => {
+    switch(priority) {
+      case 'high': return 'text-red-600 bg-red-100';
+      case 'medium': return 'text-yellow-600 bg-yellow-100';
+      case 'low': return 'text-green-600 bg-green-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <BookOpen className="h-8 w-8 text-blue-600" />
+              <h1 className="ml-3 text-xl font-bold text-gray-900">StudentPortal</h1>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <input
+                  type="text"
+                  placeholder="Search courses, assignments..."
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+              
+              <div className="relative">
+                <Bell className="h-6 w-6 text-gray-600 cursor-pointer hover:text-blue-600" />
+                {notifications.filter(n => !n.read).length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
+                    {notifications.filter(n => !n.read).length}
+                  </span>
+                )}
+              </div>
+              
+              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-medium">
+                JS
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Welcome Section */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900">Welcome back, John!</h2>
+          <p className="text-gray-600">You have 3 assignments due this week and 2 upcoming exams.</p>
+        </div>
+
+        {/* Navigation Tabs */}
+        <div className="mb-8">
+          <nav className="flex space-x-8">
+            {[
+              { id: 'overview', label: 'Overview', icon: TrendingUp },
+              { id: 'courses', label: 'My Courses', icon: BookOpen },
+              { id: 'assignments', label: 'Assignments', icon: FileText },
+              { id: 'grades', label: 'Grades', icon: Trophy },
+              { id: 'resources', label: 'Resources', icon: Download }
+            ].map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                onClick={() => setActiveTab(id)}
+                className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                  activeTab === id
+                    ? 'bg-blue-100 text-blue-700 border-b-2 border-blue-600'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                }`}
+              >
+                <Icon className="h-4 w-4 mr-2" />
+                {label}
+              </button>
+            ))}
+          </nav>
+        </div>
+
+        {/* Overview Tab */}
+        {activeTab === 'overview' && (
+          <div className="space-y-6">
+            {/* Quick Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <div className="flex items-center">
+                  <BookOpen className="h-8 w-8 text-blue-600" />
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Active Courses</p>
+                    <p className="text-2xl font-bold text-gray-900">3</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <div className="flex items-center">
+                  <Clock className="h-8 w-8 text-yellow-600" />
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Pending Tasks</p>
+                    <p className="text-2xl font-bold text-gray-900">6</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <div className="flex items-center">
+                  <Trophy className="h-8 w-8 text-green-600" />
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">GPA</p>
+                    <p className="text-2xl font-bold text-gray-900">3.7</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <div className="flex items-center">
+                  <Star className="h-8 w-8 text-purple-600" />
+                  <div className="ml-4">
+                    <p className="text-sm font-medium text-gray-600">Credits</p>
+                    <p className="text-2xl font-bold text-gray-900">18</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Recent Activity & Notifications */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Notifications</h3>
+                <div className="space-y-3">
+                  {notifications.map((notification) => (
+                    <div
+                      key={notification.id}
+                      className={`p-3 rounded-lg border cursor-pointer transition-colors ${
+                        notification.read ? 'bg-gray-50 border-gray-200' : 'bg-blue-50 border-blue-200'
+                      }`}
+                      onClick={() => markNotificationRead(notification.id)}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex">
+                          {notification.type === 'assignment' && <FileText className="h-4 w-4 text-orange-500 mt-1 mr-2" />}
+                          {notification.type === 'grade' && <Trophy className="h-4 w-4 text-green-500 mt-1 mr-2" />}
+                          {notification.type === 'announcement' && <Bell className="h-4 w-4 text-blue-500 mt-1 mr-2" />}
+                          <div>
+                            <p className="text-sm text-gray-900">{notification.message}</p>
+                            <p className="text-xs text-gray-500">{notification.time}</p>
+                          </div>
+                        </div>
+                        {!notification.read && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Upcoming Deadlines</h3>
+                <div className="space-y-3">
+                  {assignments.filter(a => a.status === 'pending').map((assignment) => (
+                    <div key={assignment.id} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div>
+                        <p className="font-medium text-gray-900">{assignment.title}</p>
+                        <p className="text-sm text-gray-600">{assignment.course}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm text-gray-900">{assignment.dueDate}</p>
+                        <span className={`px-2 py-1 rounded-full text-xs ${getPriorityColor(assignment.priority)}`}>
+                          {assignment.priority}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Courses Tab */}
+        {activeTab === 'courses' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {courses.map((course) => (
+              <div key={course.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div className={`h-2 ${course.color}`}></div>
+                <div className="p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h3 className="font-semibold text-gray-900">{course.name}</h3>
+                      <p className="text-sm text-gray-600">{course.code}</p>
+                      <p className="text-sm text-gray-600">{course.instructor}</p>
+                    </div>
+                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                      {course.grade}
+                    </span>
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="flex justify-between text-sm mb-1">
+                      <span>Progress</span>
+                      <span>{course.progress}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className={`h-2 rounded-full ${getProgressColor(course.progress)}`}
+                        style={{ width: `${course.progress}%` }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center text-sm text-gray-600">
+                    <div className="flex items-center">
+                      <Clock className="h-4 w-4 mr-1" />
+                      {course.nextClass}
+                    </div>
+                    <div className="flex items-center">
+                      <FileText className="h-4 w-4 mr-1" />
+                      {course.assignments} pending
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Assignments Tab */}
+        {activeTab === 'assignments' && (
+          <div className="bg-white rounded-lg shadow-sm">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold text-gray-900">All Assignments</h3>
+                <div className="flex items-center space-x-2">
+                  <Filter className="h-4 w-4 text-gray-600" />
+                  <select className="border border-gray-300 rounded-md px-3 py-1 text-sm">
+                    <option>All Status</option>
+                    <option>Pending</option>
+                    <option>Completed</option>
+                    <option>Overdue</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div className="divide-y divide-gray-200">
+              {assignments.map((assignment) => (
+                <div key={assignment.id} className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center mb-2">
+                        <h4 className="text-lg font-medium text-gray-900">{assignment.title}</h4>
+                        <span className={`ml-3 px-2 py-1 rounded-full text-xs ${getPriorityColor(assignment.priority)}`}>
+                          {assignment.priority}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600 mb-2">{assignment.course}</p>
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Calendar className="h-4 w-4 mr-1" />
+                        Due: {assignment.dueDate}
+                      </div>
+                    </div>
+                    
+                    <div className="ml-6 text-right">
+                      {assignment.status === 'completed' ? (
+                        <CheckCircle className="h-6 w-6 text-green-500" />
+                      ) : (
+                        <div className="flex items-center space-x-3">
+                          <div className="text-sm">
+                            <div className="w-20 bg-gray-200 rounded-full h-2">
+                              <div
+                                className="bg-blue-500 h-2 rounded-full"
+                                style={{ width: `${assignment.progress}%` }}
+                              ></div>
+                            </div>
+                            <span className="text-xs text-gray-500">{assignment.progress}%</span>
+                          </div>
+                          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm">
+                            Continue
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Grades Tab */}
+        {activeTab === 'grades' && (
+          <div className="space-y-6">
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Grade Overview</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-blue-600">3.7</div>
+                  <div className="text-sm text-gray-600">Current GPA</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-green-600">A-</div>
+                  <div className="text-sm text-gray-600">Average Grade</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-purple-600">18</div>
+                  <div className="text-sm text-gray-600">Credit Hours</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-sm">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900">Recent Grades</h3>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assignment</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Points</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {recentGrades.map((grade, index) => (
+                      <tr key={index}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{grade.course}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{grade.assignment}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className="px-2 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800">
+                            {grade.grade}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{grade.points}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{grade.date}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Resources Tab */}
+        {activeTab === 'resources' && (
+          <div className="space-y-6">
+            <div className="bg-white rounded-lg shadow-sm">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900">Study Resources</h3>
+              </div>
+              <div className="p-6">
+                <div className="space-y-4">
+                  {studyResources.map((resource) => (
+                    <div key={resource.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                      <div className="flex items-center">
+                        {resource.type === 'pdf' && <FileText className="h-8 w-8 text-red-500 mr-4" />}
+                        {resource.type === 'video' && <Video className="h-8 w-8 text-blue-500 mr-4" />}
+                        {resource.type === 'worksheet' && <FileText className="h-8 w-8 text-green-500 mr-4" />}
+                        <div>
+                          <h4 className="font-medium text-gray-900">{resource.title}</h4>
+                          <p className="text-sm text-gray-600">{resource.course}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        {resource.downloaded && (
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                        )}
+                        <button className="p-2 text-gray-600 hover:text-blue-600">
+                          {resource.type === 'video' ? <Play className="h-4 w-4" /> : <Download className="h-4 w-4" />}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Study Groups</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex items-center">
+                      <Users className="h-5 w-5 text-blue-500 mr-3" />
+                      <div>
+                        <p className="font-medium">Physics Study Group</p>
+                        <p className="text-sm text-gray-600">5 members</p>
+                      </div>
+                    </div>
+                    <button className="text-blue-600 hover:text-blue-700">Join</button>
+                  </div>
+                  <div className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex items-center">
+                      <Users className="h-5 w-5 text-green-500 mr-3" />
+                      <div>
+                        <p className="font-medium">Calculus Help</p>
+                        <p className="text-sm text-gray-600">8 members</p>
+                      </div>
+                    </div>
+                    <button className="text-blue-600 hover:text-blue-700">Join</button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                <div className="space-y-3">
+                  <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    Message Instructor
+                  </button>
+                  <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Schedule Office Hours
+                  </button>
+                  <button className="w-full flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    <FileText className="h-4 w-4 mr-2" />
+                    Submit Assignment
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default StudentDashboard;

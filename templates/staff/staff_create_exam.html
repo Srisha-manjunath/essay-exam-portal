@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Create Exam</h2>
+<form method="post">
+  <input type="text" name="title" placeholder="Exam Title" required><br>
+  <textarea name="prompt" placeholder="Exam Prompt" required></textarea><br>
+  <label>Open At: <input type="datetime-local" name="open_at" required></label><br>
+  <label>Close At: <input type="datetime-local" name="close_at" required></label><br>
+  <input type="number" name="time_limit" placeholder="Time Limit (minutes)" required><br>
+  <input type="number" name="max_score" placeholder="Max Score" required><br>
+  <button type="submit">Create</button>
+</form>
+{% endblock %}

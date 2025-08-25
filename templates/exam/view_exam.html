@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ exam.title }}</h2>
+<p><strong>Prompt:</strong></p>
+<p>{{ exam.prompt }}</p>
+
+<p><strong>Open At:</strong> {{ exam.open_at.strftime('%Y-%m-%d %H:%M') }}</p>
+<p><strong>Close At:</strong> {{ exam.close_at.strftime('%Y-%m-%d %H:%M') }}</p>
+<p><strong>Time Limit:</strong> {{ exam.time_limit_min }} minutes</p>
+<p><strong>Max Score:</strong> {{ exam.max_score }}</p>
+
+{% if session.user_id %}
+  {% if current_user.role == 'student' %}
+    <a href="{{ url_for('take_exam', exam_id=exam._id) }}">Take Exam</a>
+  {% elif current_user.role == 'staff' %}
+    <a href="{{ url_for('submissions', exam_id=exam._id) }}">View Submissions</a>
+  {% endif %}
+{% endif %}
+{% endblock %}
+

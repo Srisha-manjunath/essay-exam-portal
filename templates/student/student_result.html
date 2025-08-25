@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Exam Result</h2>
+{% if sub %}
+<p>Score: {{ sub.score or 'Pending' }}</p>
+<p>Comments: {{ sub.comments or 'Pending' }}</p>
+<p>Plagiarism Score: {{ '%.2f'%sub.plagiarism_score }}</p>
+{% else %}
+<p>No submission found.</p>
+{% endif %}
+{% endblock %}

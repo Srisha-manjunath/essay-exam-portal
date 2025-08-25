@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Submissions</h2>
+<ul>
+{% for s in subs %}
+<li>{{ s.user_id }} - Plagiarism: {{ '%.2f'%s.plagiarism_score }} - <a href="{{ url_for('grade', sub_id=s._id) }}">Grade</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

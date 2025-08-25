@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Grade Submission</h2>
+<p>Essay: {{ sub.essay_text }}</p>
+<form method="post">
+  <input type="number" name="score" placeholder="Score" required><br>
+  <textarea name="comments" placeholder="Comments"></textarea><br>
+  <button type="submit">Submit Grade</button>
+</form>
+{% endblock %}
+
